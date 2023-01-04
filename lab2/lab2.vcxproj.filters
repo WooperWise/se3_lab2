@@ -1,0 +1,75 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Исходные файлы">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Файлы заголовков">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Файлы ресурсов">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Файлы заголовков\Array">
+      <UniqueIdentifier>{8d7e847e-3af4-4b8b-86bf-6d2d82135aa6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы заголовков\Bag">
+      <UniqueIdentifier>{d9811cd4-fef0-4383-b0d9-d730a8be5883}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы заголовков\Tree">
+      <UniqueIdentifier>{65e54096-daf2-4d09-9826-4a5614a9b31a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы заголовков\Hystogram">
+      <UniqueIdentifier>{79d39bc8-d773-44bd-a17f-d00e03281aeb}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="BackpackItems.cpp">
+      <Filter>Файлы заголовков\Bag</Filter>
+    </ClCompile>
+    <ClCompile Include="NTree.cpp">
+      <Filter>Файлы заголовков\Tree</Filter>
+    </ClCompile>
+    <ClCompile Include="BTree.cpp">
+      <Filter>Файлы заголовков\Tree</Filter>
+    </ClCompile>
+    <ClCompile Include="Hystogram.cpp">
+      <Filter>Файлы заголовков\Hystogram</Filter>
+    </ClCompile>
+    <ClCompile Include="Source.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="DynamicArray.h">
+      <Filter>Файлы заголовков\Array</Filter>
+    </ClInclude>
+    <ClInclude Include="ArraySequence.h">
+      <Filter>Файлы заголовков\Array</Filter>
+    </ClInclude>
+    <ClInclude Include="ISortedSequence.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="BackpackItems.h">
+      <Filter>Файлы заголовков\Bag</Filter>
+    </ClInclude>
+    <ClInclude Include="NTree.h">
+      <Filter>Файлы заголовков\Tree</Filter>
+    </ClInclude>
+    <ClInclude Include="BTree.h">
+      <Filter>Файлы заголовков\Tree</Filter>
+    </ClInclude>
+    <ClInclude Include="BinaryTree.h">
+      <Filter>Файлы заголовков\Tree</Filter>
+    </ClInclude>
+    <ClInclude Include="BinSearch.h">
+      <Filter>Файлы заголовков\Tree</Filter>
+    </ClInclude>
+    <ClInclude Include="Hystogram.h">
+      <Filter>Файлы заголовков\Hystogram</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

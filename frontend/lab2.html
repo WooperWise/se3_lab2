@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+</head>
+<body>
+
+    <div id="MainMenu">
+        <button id="ButtonOpenBag" onclick="openBag();">Open Bag</button>
+        <button id="ButtonOpenBinTreeSearch" onclick="openBinTreeSearch();">Open Bin Tree Search</button>
+        <button id="ButtonOpenBTreeSearch" onclick="openBTreeSearch();">Open BTree Search</button>
+        <button id="ButtonOpenBinSearch" onclick="openBinSearch();">Open Bin Search</button>
+        <button id="ButtonOpenCombSearch" onclick="openCombSearch();">Open Comb Search</button>
+    </div>
+
+    <div id="MenuBag">
+        <button id="ButtonForBag" onclick="bag();">Create Bag</button>
+        <input id="input1" placeholder="Enter count of items" name="name1" />
+        <input id="input2" placeholder="Enter weight of bag" name="name2" />
+    </div>
+
+    <button id="ButtonExit" onclick="exit();">Exit</button>
+
+    <div id="bagText">
+        <p id="weight"></p>
+        <p id="cost"></p>
+        <p id="bc"></p>
+        <p id="items"></p>
+        <p id="timeBag"></p>
+    </div>
+
+    <div id="binSearchText">
+        <p id="textBinSearch"></p>
+        <p id="binSearch"></p>
+    </div>
+
+    <div id="bTreeSearchText">
+        <p id="textBTreeSearch"></p>
+        <p id="bTreeSearch"></p>
+    </div>
+
+    <div id="binTreeSearchText">
+        <p id="textBinTreeSearch"></p>
+        <p id="binTreeSearch"></p>
+    </div>
+
+    <div id="combSearchText">
+        <p id="textCombSearch"></p>
+        <p id="combSearch"></p>
+    </div>
+
+    <div id="MenuBinSearch">
+        <button id="ButtonForBinSeacrh" onclick="Search();">Start Bin Serarch</button>
+        <input id="input3" placeholder="Enter key for search" name="name3" />
+    </div>
+
+    <div id="MenuBTreeSearch">
+        <button id="ButtonForBTreeSeacrh" onclick="BTreeSearch();">Start BTree Serarch</button>
+        <input id="input4" placeholder="Enter key for search" name="name4" />
+    </div>
+
+    <div id="MenuBinTreeSearch">
+        <button id="ButtonForBinTreeSeacrh" onclick="BinTreeSearch();">Start Bin Tree Serarch</button>
+        <input id="input5" placeholder="Enter key for search" name="name5" />
+    </div>
+
+    <div id="MenuCombSearch">
+        <button id="ButtonForCombSeacrh" onclick="CombSearch();">Start Comb Serarch</button>
+        <input id="input6" placeholder="Enter key for search" name="name6" />
+    </div>
+
+    <div id="chart">
+        <canvas id="myChart"></canvas>
+    </div>
+
+    <script src="D:/SEM3/lab1/frontend/chart.js"></script>
+    <script src="D:/SEM3/lab1/frontend/axios.min.js"></script>
+
+    <script>
+
+        const input1 = document.getElementById('input1');
+        const input2 = document.getElementById('input2');
+        const input3 = document.getElementById('input3');
+        const input4 = document.getElementById('input4');
+        const input5 = document.getElementById('input5');
+        const input6 = document.getElementById('input6');
+        const ctx = document.getElementById('myChart');
+        var a, b, c, d, n, h
+
+        var chart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+                datasets: [{
+                    label: '# of Votes',
+                    data: [12, 19, 3, 5, 2, 3],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        document.getElementById("chart").hidden = true;
+        document.getElementById("MenuBag").hidden = true;
+        document.getElementById("ButtonExit").hidden = true;
+        document.getElementById("MenuBinSearch").hidden = true;
+        document.getElementById("MenuBTreeSearch").hidden = true;
+        document.getElementById("MenuBinTreeSearch").hidden = true;
+        document.getElementById("MenuCombSearch").hidden = true;
+
+        input1.addEventListener('input', updateValueforA);
+        input2.addEventListener('input', updateValueforB);
+        input3.addEventListener('input', updateValueforC);
+        input4.addEventListener('input', updateValueforD);
+        input5.addEventListener('input', updateValueforN);
+        input6.addEventListener('input', updateValueforH);
+
+        function updateValueforA(e) {
+            a = e.target.value;
+        }
+
+        function updateValueforC(e) {
+            c = e.target.value;
+        }
+
+        function updateValueforB(e) {
+            b = e.target.value;
+        }
+
+        function updateValueforD(e) {
+            d = e.target.value;
+        }
+
+        function updateValueforN(e) {
+            n = e.target.value;
+            //console.log(n);
+        }
+
+        function updateValueforH(e) {
+            h = e.target.value;
+            console.log(h);
+        }
+
+        async function bag() {
+            document.getElementById("chart").hidden = false;
+            document.getElementById('bagText').hidden = false;
+            var tmp = document.getElementById("items");
+            while (tmp.firstChild) {
+                tmp.removeChild(tmp.lastChild);
+            }
+
+            var q = await axios.get("http://127.0.0.1:1337/BagRandom/" + a + "/" + b);
+            console.log(q);
+            var log = document.getElementById('bc');
+            log.textContent = "Bearing Capacity: " + q.data['Bag'][0];
+            log = document.getElementById('weight');
+            log.textContent = "Weight: " + q.data['Bag'][1];
+            log = document.getElementById('cost');
+            log.textContent = "Cost: " + q.data['Bag'][2];
+            log = document.getElementById('items');
+            for (var i = 0; i < Object.keys(q.data['Items']).length; i++) {
+                var p = document.createElement("p");
+                p.textContent = q.data['Items'][i].data;
+                log.appendChild(p);
+            }
+
+            log = document.getElementById('timeBag');
+            log.textContent = "Time: " + q.data['TimeBag'][0];
+
+            const labels = q.data['Label'];
+            const data = {
+                labels: labels,
+                datasets: [
+                    {
+                        label: 'Weight',
+                        data: q.data['Weight'],
+                        borderColor: ['rgba(54, 162, 235, 1)'],
+                        backgroundColor: ['rgba(54, 162, 235, 0.5)'],
+                    },
+                    {
+                        label: 'Cost',
+                        data: q.data['Cost'],
+                        borderColor: ['rgba(255, 159, 64, 1)'],
+                        backgroundColor: ['rgba(255, 159, 64, 0.5)'],
+                    }
+                ]
+            }
+
+            chart.options = {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                    title: {
+                        display: true,
+                        text: 'Hysstogram Items'
+                    }
+                }
+            }
+            chart.data = data;
+
+            chart.update();
+        }
+
+        async function hiddenBagText() {
+            var tmp = document.getElementById("items");
+            while (tmp.firstChild) {
+                tmp.removeChild(tmp.lastChild);
+            }
+            document.getElementById('bagText').hidden = true;
+            document.getElementById('chart').hidden = true;
+        }
+
+        async function openBag() {
+            document.getElementById("MainMenu").hidden = true;
+            document.getElementById("MenuBag").hidden = false;
+            document.getElementById("ButtonExit").hidden = false;
+        }
+
+        async function openBinSearch() {
+            document.getElementById("MainMenu").hidden = true;
+            document.getElementById("MenuBinSearch").hidden = false;
+            document.getElementById("ButtonExit").hidden = false;
+        }
+
+        async function Search() {
+            document.getElementById("chart").hidden = false;
+            document.getElementById('binSearchText').hidden = false;
+            var tmp = document.getElementById("binSearch");
+            while (tmp.firstChild) {
+                tmp.removeChild(tmp.lastChild);
+            }
+
+            var q = await axios.get("http://127.0.0.1:1337/BinSearch/" + c);
+            console.log(q);
+            var log = document.getElementById('textBinSearch');
+            log.textContent = "for 1000, 2000, 3000, 4000, 5000, 6000, 7000, 8000, 9000, 10000 data:";
+            log = document.getElementById('binSearch');
+            for (var i = 0; i < Object.keys(q.data['Search']).length; i++) {
+                var p = document.createElement("p");
+                p.textContent = "For " + (i + 1) * 1000 + " " + q.data['Search'][i];
+                log.appendChild(p);
+            }
+
+            const labels = [1000, 2000, 3000, 4000, 5000, 6000, 7000, 8000, 9000, 10000];
+            const data = {
+                labels: labels,
+                datasets: [{
+                    label: 'Time',
+                    data: q.data['Time'],
+                    fill: false,
+                    borderColor: ['rgba(54, 162, 235, 1)'],
+                    backgroundColor: ['rgba(54, 162, 235, 0.5)'],
+                    tension: 0.1
+                }]
+            };
+
+            chart.data = data;
+
+            chart.update();
+        }
+
+        async function hiddenBinSearchText() {
+            var tmp = document.getElementById("binSearch");
+            while (tmp.firstChild) {
+                tmp.removeChild(tmp.lastChild);
+            }
+            document.getElementById('binSearchText').hidden = true;
+            document.getElementById('chart').hidden = true;
+        }
+
+        async function openBTreeSearch() {
+            document.getElementById("MainMenu").hidden = true;
+            document.getElementById("MenuBTreeSearch").hidden = false;
+            document.getElementById("ButtonExit").hidden = false;
+        }
+
+        async function BTreeSearch() {
+            document.getElementById("chart").hidden = false;
+            document.getElementById('bTreeSearchText').hidden = false;
+            var tmp = document.getElementById("bTreeSearch");
+            while (tmp.firstChild) {
+                tmp.removeChild(tmp.lastChild);
+            }
+
+            var q = await axios.get("http://127.0.0.1:1337/BTreeSearch/" + d);
+            console.log(q);
+            var log = document.getElementById('textBTreeSearch');
+            log.textContent = "for 1000, 2000, 3000, 4000, 5000, 6000, 7000, 8000, 9000, 10000 data:";
+            log = document.getElementById('bTreeSearch');
+            for (var i = 0; i < Object.keys(q.data['Search']).length; i++) {
+                var p = document.createElement("p");
+                p.textContent = "For " + (i + 1) * 1000 + " " + q.data['Search'][i];
+                log.appendChild(p);
+            }
+
+            const labels = [1000, 2000, 3000, 4000, 5000, 6000, 7000, 8000, 9000, 10000];
+            const data = {
+                labels: labels,
+                datasets: [{
+                    label: 'Time',
+                    data: q.data['Time'],
+                    fill: false,
+                    borderColor: ['rgba(54, 162, 235, 1)'],
+                    backgroundColor: ['rgba(54, 162, 235, 0.5)'],
+                    tension: 0.1
+                }]
+            };
+
+            chart.data = data;
+
+            chart.update();
+        }
+
+        async function hiddenBTreeText() {
+            var tmp = document.getElementById("bTreeSearch");
+            while (tmp.firstChild) {
+                tmp.removeChild(tmp.lastChild);
+            }
+            document.getElementById('bTreeSearchText').hidden = true;
+            document.getElementById('chart').hidden = true;
+        }
+
+        async function openBinTreeSearch() {
+            document.getElementById("MainMenu").hidden = true;
+            document.getElementById("MenuBinTreeSearch").hidden = false;
+            document.getElementById("ButtonExit").hidden = false;
+        }
+
+        async function BinTreeSearch() {
+            document.getElementById("chart").hidden = false;
+            document.getElementById('binTreeSearchText').hidden = false;
+            var tmp = document.getElementById("binTreeSearch");
+            while (tmp.firstChild) {
+                tmp.removeChild(tmp.lastChild);
+            }
+
+            var q = await axios.get("http://127.0.0.1:1337/BinTreeSearch/" + n);
+            console.log(q);
+            var log = document.getElementById('textBinTreeSearch');
+            log.textContent = "for 1000, 2000, 3000, 4000, 5000, 6000, 7000, 8000, 9000, 10000 data:";
+            log = document.getElementById('binTreeSearch');
+            for (var i = 0; i < Object.keys(q.data['Search']).length; i++) {
+                var p = document.createElement("p");
+                p.textContent = "For " + (i + 1) * 1000 + " " + q.data['Search'][i];
+                log.appendChild(p);
+            }
+
+            const labels = [1000, 2000, 3000, 4000, 5000, 6000, 7000, 8000, 9000, 10000];
+            const data = {
+                labels: labels,
+                datasets: [{
+                    label: 'Time',
+                    data: q.data['Time'],
+                    fill: false,
+                    borderColor: ['rgba(54, 162, 235, 1)'],
+                    backgroundColor: ['rgba(54, 162, 235, 0.5)'],
+                    tension: 0.1
+                }]
+            };
+
+            chart.data = data;
+
+            chart.update();
+        }
+
+        async function hiddenBinTreeText() {
+            var tmp = document.getElementById("binTreeSearch");
+            while (tmp.firstChild) {
+                tmp.removeChild(tmp.lastChild);
+            }
+            document.getElementById('binTreeSearchText').hidden = true;
+            document.getElementById('chart').hidden = true;
+        }
+
+        async function openCombSearch() {
+            document.getElementById("MainMenu").hidden = true;
+            document.getElementById("MenuCombSearch").hidden = false;
+            document.getElementById("ButtonExit").hidden = false;
+        }
+
+        async function CombSearch() {
+            document.getElementById("chart").hidden = false;
+            document.getElementById('combSearchText').hidden = false;
+            var tmp = document.getElementById("combSearch");
+            while (tmp.firstChild) {
+                tmp.removeChild(tmp.lastChild);
+            }
+
+            var q = await axios.get("http://127.0.0.1:1337/CombSearch/" + h);
+            console.log(q);
+            var log = document.getElementById('textCombSearch');
+            log.textContent = "for 1000, 2000, 3000, 4000, 5000, 6000, 7000, 8000, 9000, 10000 data:";
+            log = document.getElementById('combSearch');
+            for (var i = 0; i < Object.keys(q.data['SearchBinSearch']).length; i++) {
+                var p = document.createElement("p");
+                p.textContent = "For " + (i + 1) * 1000 + ": Bin Search:" + q.data['SearchBinSearch'][i] +
+                ",  Bin Tree Seqarch:" + q.data['SearchBinTreeSearch'][i] + ",  BTree Seqarch:" + q.data['SearchBTreeSearch'][i];
+                log.appendChild(p);
+            }
+
+
+            const labels = [1000, 2000, 3000, 4000, 5000, 6000, 7000, 8000, 9000, 10000];
+            const data = {
+                labels: labels,
+                datasets: [
+                    {
+                        label: 'Bin Search',
+                        data: q.data['TimeBinSearch'],
+                        borderColor: ['rgba(54, 162, 235, 1)'],
+                        backgroundColor: ['rgba(54, 162, 235, 0.5)'],
+                    },
+                    {
+                        label: 'Bin Tree Search',
+                        data: q.data['TimeBinTreeSearch'],
+                        borderColor: ['rgba(255, 159, 64, 1)'],
+                        backgroundColor: ['rgba(255, 159, 64, 0.5)'],
+                    },
+                    {
+                        label: 'BTree Search',
+                        data: q.data['TimeBTreeSearch'],
+                        borderColor: ['rgba(255, 0, 255, 1)'],
+                        backgroundColor: ['rgba(255, 0, 255, 0.5)'],
+                    }
+                ]
+            }
+
+            chart.type = 'line';
+            chart.data = data;
+            chart.options = {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                    title: {
+                        display: true,
+                        text: 'Time'
+                    }
+                }
+            }
+
+            chart.update();
+        }
+
+        async function hiddenCombText() {
+            var tmp = document.getElementById("combSearch");
+            while (tmp.firstChild) {
+                tmp.removeChild(tmp.lastChild);
+            }
+            document.getElementById('combSearchText').hidden = true;
+            document.getElementById('chart').hidden = true;
+        }
+
+        async function exit() {
+            hiddenBagText();
+            hiddenBinSearchText();
+            hiddenBTreeText();
+            hiddenBinTreeText();
+            hiddenCombText();
+            document.getElementById("MainMenu").hidden = false;
+            document.getElementById("MenuBag").hidden = true;
+            document.getElementById("MenuBinSearch").hidden = true;
+            document.getElementById("MenuBTreeSearch").hidden = true;
+            document.getElementById("MenuBinTreeSearch").hidden = true;
+            document.getElementById("MenuCombSearch").hidden = true;
+            document.getElementById("ButtonExit").hidden = true;
+        }
+    </script>
+</body>
+
+</html>
